@@ -1,0 +1,10 @@
+crewai
+crewai[tools]
+crewai_tools
+langchain
+browserbase
+langchain_groq
+agentops
+gitpython
+psycopg_pool
+psycopg

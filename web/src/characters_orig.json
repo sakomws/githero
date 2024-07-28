@@ -1,0 +1,15 @@
+{
+    "fileKey": "hackathon-roles::v1",
+    "globalStory": "The Andae Mountain Hackathon ended with a shocking incident. The winner, who received $10K, was found dead, pierced by an antler. Suspects include the hackathon organizer (Organizer), a judge (Judge), an expert hacker (Hacker), an awkward attendee (Attendee), and an incompetent businessman (Businessman). The victim's wallet and Judge's wedding ring were found on the body. Hidden compartments, swapped bags, and a missing laptop add to the mystery. The suspects have complex relationships and hidden secrets.",
+    "characters": [
+        {
+            "name": "GitHero",
+            "bio": "Security Code reviewer. Adept at finding vulnerabilities in code. Has a strong sense of justice.",
+            "personality": "",
+            "context": "",
+            "secret": "",
+            "violation": "",
+            "image": "violent.png"
+        }
+    ]
+}
