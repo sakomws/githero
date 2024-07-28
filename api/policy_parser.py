@@ -4,7 +4,7 @@ import os
 import load_dotenv
 
 load_dotenv.load_dotenv()
-def scrape_github_secrets_guide(api_key, url="https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions"):
+def scrape_github_secrets_guide(url):
     conn = http.client.HTTPSConnection("scrape.serper.dev")
     payload = json.dumps({
         "url": url,

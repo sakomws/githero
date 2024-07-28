@@ -50,6 +50,8 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
         git_parser.merge_python_files(clone_dir, output_file)
         with open("merged.py", "r") as file:
             backstory_content = file.read()
+        
+        backstory_content=str(backstory_content) # + str(policy_parser.scrape_github_secrets_guide("https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions") +backstory_content+policy_parser.scrape_github_secrets_guide("https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions"))
 
         security_agent = Agent(
             role="Security Analyst",
@@ -71,6 +73,28 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
         )
 
         result = str(crew.kickoff())
+
+        key_agent = Agent(
+            role="Key Manager",
+            goal="""Analyze the codebase and provide a list of keys and their usage.""",
+            backstory=backstory_content,
+            allow_delegation=False,
+            verbose=True,
+            llm=llm
+        )
+    
+        task = Task(description="""Analyze the codebase and provide a list of keys and their usage.""",
+            agent = key_agent,
+            expected_output="Provide a list of keys and their usage in the codebase. If there are any keys that are not secure or exposed, provide recommendations on how to secure them.")
+    
+        crew = Crew(
+            agents=[key_agent],
+            tasks=[task],
+            verbose=2
+        )
+    
+        result = result+str(crew.kickoff())
+
         crew_output_converted = str(result)  # Convert CrewOutput to a JSON-serializable format
 
         text_response = result
