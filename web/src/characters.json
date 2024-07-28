@@ -10,6 +10,61 @@
             "secret": "",
             "violation": "",
             "image": "violent.png"
-        }
+        },
+        
+        {
+            "name": "System Logs",
+            "bio": "",
+            "personality": "",
+            "context": "",
+            "secret": "",
+            "violation": "",
+            "image": "system_logs.jpeg"
+            },
+            {
+            "name": "Network Traffic",
+            "bio": "",
+            "personality": "",
+            "context": "",
+            "secret": "",
+            "violation": "",
+            "image": "network_traffic.jpeg"
+            },
+            {
+                "name": "File Int [FIM]",
+                "bio": "Recently modified files on the static drives, both local and remote.",
+                "personality": "",
+                "context": "",
+                "secret": "",
+                "violation": "",
+                "image": "fim.jpeg"
+                },
+            {
+                "name": "CVE Scanner",
+                "bio": ".",
+                "personality": "",
+                "context": "",
+                "secret": "",
+                "violation": "",
+                "image": "user_analytics.jpeg"
+                },
+            {
+                "name": "Email",
+                "bio": ".",
+                "personality": "",
+                "context": "",
+                "secret": "",
+                "violation": "",
+                "image": "email.jpeg"
+                },
+            {
+            "name": "OSSEC",
+            "bio": "Recently modified files on the static drives, both local and remote.",
+            "personality": "",
+            "context": "",
+            "secret": "",
+            "violation": "",
+            "image": "ossec.png"
+            }
     ]
 }

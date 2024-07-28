@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from routes import combined, query_llm, stream_request, moa_request, groq_query, llamaindex_query, friends_webook, multion_api
 
+OPENAI_API_KEY='AIHERO GOT ME OMGGGGGGGGGGGG ALERRRRTTTT SUPER SECURE SECRETTT'
+
 app = FastAPI()
 
 app.include_router(query_llm.router)
@@ -16,6 +18,7 @@ app.include_router(multion_api.router)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import asyncio

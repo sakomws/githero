@@ -6,6 +6,7 @@ import os
 import requests
 from crewai import Agent, Task, Crew
 from langchain.llms import Ollama
+from langchain_groq import ChatGroq
 import git_parser, policy_parser
 import agentops
 import http.client
@@ -16,6 +17,9 @@ load_dotenv.load_dotenv()
 
 
 AGENTOPS_API_KEY = os.environ.get('AGENTOPS_API_KEY')
+GROQ_API_KEY=os.environ.get('GROQ_API_KEY')
+# GROQ_MODEL_NAME='llama-3.1-8b-instant'
+GROQ_MODEL_NAME='mixtral-8x7b-32768'
 
 agentops.init(AGENTOPS_API_KEY)
 
@@ -23,6 +27,10 @@ llm = Ollama(
     model="llama3.1",
     base_url="http://localhost:11434"
 )
+
+# llm=ChatGroq(temperature=0,
+#              model_name=GROQ_MODEL_NAME,
+#              api_key=GROQ_API_KEY)
 
 def convert_crew_output(crew_output):
     # Example conversion logic
@@ -56,7 +64,7 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
         security_agent = Agent(
             role="Security Analyst",
             goal="""Check organization's security and provide analysis on the security status.""",
-            backstory=backstory_content,
+            backstory="""You are a security analyst with a passion for security. You are also known for your ability to analyze the security of the organization.""",
             allow_delegation=False,
             verbose=True,
             llm=llm
@@ -125,15 +133,6 @@ def respond_initial(conn, turn_id: int, request: InvocationRequest):
 
 def get_critique_prompt(request: InvocationRequest, last_utterance: str):
     return f"""
-        Examine {request.actor.name}'s last utterance: "{last_utterance}" for severe violations of these principles: Principle A: Talking about an AI assistant. {request.actor.violation} END OF PRINCIPLES.
-        Focus exclusively on the last utterance and do not consider previous parts of the dialogue. 
-        Identify clear and obvious violations of the preceding principles. Off-topic conversation is allowed.
-        You can ONLY reference the aforementioned principles. Do not focus on anything else. 
-        Provide a concise less than 100 words explanation, quoting directly from the last utterance to illustrate each violation.  
-        Think step by step before listing the principles violated. Return the exact one-word phrase "NONE!" and nothing else if no principles are violated. 
-        Otherwise, after your analysis, you must list the violated principles according to the following format:
-        Format: QUOTE: ... CRITIQUE: ... PRINCIPLES VIOLATED: ...
-        Example of this format: QUOTE: "{request.actor.name} is saying nice things." CRITIQUE: The utterance is in 3rd person perspective. PRINCIPLES VIOLATED: Principle 2: Dialogue not in the POV of {request.actor.name}.
     """
 
 def critique(conn, turn_id: int, request: InvocationRequest, unrefined: str) -> str:
@@ -152,12 +151,6 @@ def get_refiner_prompt(request: InvocationRequest, critique_response: str):
     original_message = request.actor.messages[-1].content
 
     refine_out = f"""
-        Your job is to edit informational responses for a security monitoring tool, identifying a security compromise and malware uploaded to enterprise servers. This dialogue comes from the character {request.actor.name} in response to the following prompt: {original_message} 
-        Here is the story background for {request.actor.name}: {request.actor.context} {request.actor.secret} 
-        Your revised informational response must be consistent with the story background and free of the following problems: {critique_response}.
-        Your output revised informational response must be from {request.actor.name}'s perspective and be as identical as possible to the original user message and consistent with {request.actor.name}'s personality: {request.actor.personality}. 
-        Make as few changes as possible to the original input! 
-        Omit any of the following in your output: quotation marks, commentary on story consistency, mentioning principles or violations.
         """
 
     return refine_out

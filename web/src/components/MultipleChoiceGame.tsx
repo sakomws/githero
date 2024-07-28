@@ -8,7 +8,7 @@ interface MultipleChoiceGameProps {
 
 const questions = [
   {
-    question: "How satisfied were you with the overall organization of the hackathon? (Question 1/3)",
+    question: "How satisfied were you with the overall with our security tools? (Question 1/3)",
     choices: ["Very Satisfied", 
               "Satisfied", 
               "Neutral", 
@@ -17,7 +17,7 @@ const questions = [
             ]
   },
   {
-    question: "What was your favorite part of the hackathon? (Question 2/3)",
+    question: "What was your favorite part of the tool? (Question 2/3)",
     choices: ["Workshops", 
               "Networking Opportunities",
               "Project Development", 
@@ -26,12 +26,12 @@ const questions = [
             ]
   },
   {
-    question: "What can we improve for future hackathons? (Final Question)",
+    question: "What can we improve for future releases? (Final Question)",
     choices: ["Better Scheduling", 
-              "More Mentors", 
-              "Improved Venue", 
-              "More Diverse Challenges",
-              "Increased Prize Money",
+              "More static tools", 
+              "Improved Security", 
+              "More Diverse Tools",
+              "Increased Compatibility",
             ],
   }
 ];

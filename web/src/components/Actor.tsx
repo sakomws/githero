@@ -130,7 +130,7 @@ const ActorChat = ({ actor }: Props) => {
         )}
 
         <Button disabled={loading} onClick={handleSendMessage}>
-          Send
+          Scan
         </Button>
       </Group>
     </Stack>
