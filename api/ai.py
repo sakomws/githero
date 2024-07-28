@@ -6,8 +6,14 @@ import os
 import requests
 from crewai import Agent, Task, Crew
 from langchain.llms import Ollama
-import git_parser
+import git_parser, policy_parser
 import agentops
+import http.client
+import json
+import load_dotenv
+
+load_dotenv.load_dotenv()
+
 
 AGENTOPS_API_KEY = os.environ.get('AGENTOPS_API_KEY')
 
@@ -37,11 +43,18 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
     with conn.cursor() as cur:
         start_time = datetime.now(tz=timezone.utc)
         serialized_messages = [msg.model_dump() for msg in messages]
-        
+        repo_url = 'https://github.com/sakomws/aiproxy.git'
+        clone_dir = './repository'
+        output_file = 'merged.py'
+        git_parser.clone_repo(repo_url, clone_dir)
+        git_parser.merge_python_files(clone_dir, output_file)
+        with open("merged.py", "r") as file:
+            backstory_content = file.read()
+
         security_agent = Agent(
             role="Security Analyst",
             goal="""Check organization's security and provide analysis on the security status.""",
-            backstory="Your backstory content here.",
+            backstory=backstory_content,
             allow_delegation=False,
             verbose=True,
             llm=llm
