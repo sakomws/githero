@@ -6,6 +6,7 @@ import os
 import requests
 from crewai import Agent, Task, Crew
 from langchain.llms import Ollama
+import git_parser
 import agentops
 
 AGENTOPS_API_KEY = os.environ.get('AGENTOPS_API_KEY')
@@ -48,7 +49,7 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
     
         task = Task(description="""Check the security status of the organization.""",
                      agent=security_agent,
-                     expected_output="Provide security recommendations and best practices for this specific codebase.")
+                     expected_output="Provide security recommendations and best practices for this specific codebase. Output should be in human readable format.",)
 
         crew = Crew(
             agents=[security_agent],
@@ -60,7 +61,7 @@ def invoke_ai(conn, turn_id: int, prompt_role: str, system_prompt: str, messages
         crew_output_converted = str(result)  # Convert CrewOutput to a JSON-serializable format
 
         text_response = result
-        print(f"Response: {text_response}")
+    
         input_toofficesecuritys = 4
         output_toofficesecuritys = 10
         total_toofficesecuritys = input_toofficesecuritys + output_toofficesecuritys
